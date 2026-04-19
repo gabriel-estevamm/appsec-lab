@@ -1,5 +1,3 @@
-# AppSec Detailed Guide
-
 ## Overview
 
 Application Security (AppSec) is the discipline of safeguarding applications from vulnerabilities across their lifecycle. This guide provides a deeper dive into standards, methodologies, and advanced practices beyond the introductory README.
