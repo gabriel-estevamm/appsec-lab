@@ -28,15 +28,8 @@ This repository is tailored for:
 
 ## Repository Structure
 - **README - AppSec Overview:** A concise introduction with real-world examples.
-- **AppSec Detailed Guide:** An in-depth technical reference covering standards, secure SDLC, testing methodologies, and advanced practices.
-- **Labs/**: Hands-on exercises to simulate vulnerabilities and defenses.
-- **Articles/**: Focused write-ups on specific AppSec topics.
-- **Examples/**: Demonstrations of security concepts applied in real-world scenarios.
-
-## Next Steps
-1. Start with the README - AppSec Overview for a quick introduction.
-2. Dive into the AppSec Detailed Guide for in-depth study.
-3. Explore labs and exercises to apply what you learn.
+- **labs/**: Hands-on exercises to simulate vulnerabilities and defenses.
+- **articles/**: Focused write-ups on specific AppSec topics.
 
 ## Final Note
 Security is not just about protecting code — it’s about protecting trust. Use this repository to grow your skills, but always remember: practicing security responsibly is the key to becoming a true professional in the field.
