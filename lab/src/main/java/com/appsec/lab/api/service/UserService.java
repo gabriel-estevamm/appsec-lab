@@ -53,7 +53,10 @@ public class UserService {
     }
 
     public List<UserResponse> listAll() {
-        return userRepository.findAll().stream().map(this::toResponse).toList();
+        return userRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     public UserResponse getByUsername(String username) {
