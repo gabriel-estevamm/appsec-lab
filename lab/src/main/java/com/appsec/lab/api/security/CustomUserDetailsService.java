@@ -2,8 +2,11 @@ package com.appsec.lab.api.security;
 
 import com.appsec.lab.api.model.user.User;
 import com.appsec.lab.api.repository.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -24,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
-                .authorities(user.getRole())
+                .authorities(List.of(new SimpleGrantedAuthority(user.getRole())))
                 .build();
     }
 }
