@@ -15,6 +15,8 @@ public class DataInitializer {
             if (userRepository.findByUsername("admin").isEmpty()) {
                 userRepository.save(User.builder()
                         .username("admin")
+                        .fullName("admin")
+                        .profession("Sys Admin")
                         .password(encoder.encode("admin123"))
                         .role("ROLE_ADMIN")
                         .build());
@@ -22,6 +24,8 @@ public class DataInitializer {
             if (userRepository.findByUsername("manager").isEmpty()) {
                 userRepository.save(User.builder()
                         .username("manager")
+                        .fullName("John Doe")
+                        .profession("Account Manager")
                         .password(encoder.encode("manager123"))
                         .role("ROLE_MANAGER")
                         .build());

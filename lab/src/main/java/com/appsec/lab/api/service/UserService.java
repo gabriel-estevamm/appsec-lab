@@ -32,6 +32,8 @@ public class UserService {
         }
         User user = User.builder()
                 .username(request.username())
+                .fullName(request.fullName())
+                .profession(request.profession())
                 .password(encoder.encode(request.password()))
                 .role("ROLE_CLIENT")
                 .build();
@@ -41,6 +43,8 @@ public class UserService {
     public UserResponse updateClient(Long id, UserRequest request) {
         User user = findUser(id);
         user.setUsername(request.username());
+        user.setFullName(request.fullName());
+        user.setProfession(request.profession());
         user.setPassword(encoder.encode(request.password()));
         return toResponse(userRepository.save(user));
     }
@@ -67,7 +71,7 @@ public class UserService {
 
     public UserResponse updateClientName(Long id, String newName) {
         User user = findUser(id);
-        user.setUsername(newName);
+        user.setFullName(newName);
         return toResponse(userRepository.save(user));
     }
 
@@ -98,6 +102,8 @@ public class UserService {
         return new UserResponse(
                 user.getId(),
                 user.getUsername(),
+                user.getFullName(),
+                user.getProfession(),
                 user.getRole()
         );
     }
