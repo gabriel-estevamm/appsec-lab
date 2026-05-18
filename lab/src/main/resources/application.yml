@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://mysql:3306/api_db
+    url: jdbc:mysql://mysql:3306/api_db?connectTimeout=30000&socketTimeout=60000&allowPublicKeyRetrieval=true&useSSL=false
     username: appsec
     password: appsec123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,7 +13,7 @@ spring:
 
   flyway:
     enabled: true
-    url: jdbc:mysql://mysql:3306/api_db
+    url: jdbc:mysql://mysql:3306/api_db?connectTimeout=30000&socketTimeout=60000&allowPublicKeyRetrieval=true&useSSL=false
     user: appsec
     password: appsec123
 

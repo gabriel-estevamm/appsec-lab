@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
 
@@ -40,6 +41,16 @@ public class GlobalExceptionHandler {
                 "Request body is missing or invalid"
         );
         return ResponseEntity.badRequest().body(response);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                403,
+                "Forbidden",
+                "Access denied"
+        );
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleGeneric(RuntimeException ex) {

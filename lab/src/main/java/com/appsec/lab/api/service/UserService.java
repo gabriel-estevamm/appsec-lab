@@ -125,7 +125,7 @@ public class UserService {
         User user = userRepository.findByUsernameAndActiveTrue(request.username())
                 .orElseThrow(() -> new HttpResponseException("User not found or inactive", HttpStatus.NOT_FOUND));
 
-        String token = jwtService.generateToken(user.getUsername(), user.getRole());
+        String token = jwtService.generateToken(user.getUsername(), "ROLE_" + user.getRole());
         return new AuthResponse(token);
     }
 

@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   mysql:
     image: mysql:8.0
@@ -15,7 +17,7 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uappsec", "-pappsec123"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
     restart: always
 
   app:
@@ -28,6 +30,5 @@ services:
       - .env
     ports:
       - "8080:8080"
-
 volumes:
   db_data:
