@@ -16,18 +16,16 @@ public class DataInitializer {
                 userRepository.save(User.builder()
                         .username("admin")
                         .fullName("admin")
-                        .profession("Sys Admin")
                         .password(encoder.encode("admin123"))
                         .role("ROLE_ADMIN")
                         .build());
             }
-            if (userRepository.findByUsername("manager").isEmpty()) {
+            if (userRepository.findByUsername("agent").isEmpty()) {
                 userRepository.save(User.builder()
-                        .username("manager")
+                        .username("agent")
                         .fullName("John Doe")
-                        .profession("Account Manager")
-                        .password(encoder.encode("manager123"))
-                        .role("ROLE_MANAGER")
+                        .password(encoder.encode("agent23"))
+                        .role("ROLE_AGENT")
                         .build());
             }
         };

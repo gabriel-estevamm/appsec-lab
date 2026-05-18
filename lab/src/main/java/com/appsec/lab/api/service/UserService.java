@@ -1,13 +1,11 @@
 package com.appsec.lab.api.service;
 
-import com.appsec.lab.api.dto.AuthRequest;
-import com.appsec.lab.api.dto.AuthResponse;
-import com.appsec.lab.api.dto.UserRequest;
-import com.appsec.lab.api.dto.UserResponse;
+import com.appsec.lab.api.dto.*;
 import com.appsec.lab.api.exception.HttpResponseException;
 import com.appsec.lab.api.model.user.User;
 import com.appsec.lab.api.repository.UserRepository;
 import com.appsec.lab.api.security.JwtService;
+import com.appsec.lab.api.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,60 +23,98 @@ public class UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
+    private final SecurityUtils securityUtils;
 
-    public UserResponse registerClient(UserRequest request) {
+    public UserResponse registerUser(UserRequest request) {
         if (userRepository.findByUsername(request.username()).isPresent()) {
             throw new HttpResponseException("Username already exists: " + request.username(), HttpStatus.BAD_REQUEST);
         }
         User user = User.builder()
                 .username(request.username())
                 .fullName(request.fullName())
-                .profession(request.profession())
                 .password(encoder.encode(request.password()))
-                .role("ROLE_CLIENT")
+                .role(request.role())
+                .active(true)
                 .build();
         return toResponse(userRepository.save(user));
     }
 
-    public UserResponse updateClient(Long id, UserRequest request) {
+    public UserResponse updateUser(Long id, UserRequest request) {
         User user = findUser(id);
-        user.setUsername(request.username());
-        user.setFullName(request.fullName());
-        user.setProfession(request.profession());
-        user.setPassword(encoder.encode(request.password()));
+        User currentUser = securityUtils.getCurrentUser();
+
+        if (currentUser == null) {
+            throw new HttpResponseException("No authenticated user found", HttpStatus.UNAUTHORIZED);
+        }
+
+        switch (currentUser.getRole()) {
+            case "USER" -> {
+                if (!user.getUsername().equals(currentUser.getUsername())) {
+                    throw new HttpResponseException("Users can only update their own profile", HttpStatus.FORBIDDEN);
+                }
+                updateAsUser(user, request);
+            }
+            case "ADMIN" -> updateAsAdmin(user, currentUser, request);
+            default -> throw new HttpResponseException("Invalid role", HttpStatus.FORBIDDEN);
+        }
+
         return toResponse(userRepository.save(user));
     }
 
-    public void deleteClient(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new HttpResponseException("User not found with id: " + id, HttpStatus.NOT_FOUND);
+    private void updateAsUser(User user, UserRequest request) {
+        user.setFullName(request.fullName());
+        user.setPassword(encoder.encode(request.password()));
+    }
+
+    private void updateAsAdmin(User user, User currentUser, UserRequest request) {
+        if ("USER".equals(user.getRole())) {
+            user.setFullName(request.fullName());
+            user.setPassword(encoder.encode("user123")); // reset
+            user.setRole(request.role());
+        } else if (user.getUsername().equals(currentUser.getUsername())) {
+            user.setFullName(request.fullName());
+            user.setPassword(encoder.encode(request.password()));
         }
-        userRepository.deleteById(id);
+    }
+
+    public void deactivateUser(Long id) {
+        User user = findUser(id);
+        if (!"USER".equals(user.getRole())) {
+            throw new HttpResponseException("Only USER accounts can be deactivated", HttpStatus.FORBIDDEN);
+        }
+        user.setActive(false);
+        userRepository.save(user);
     }
 
     public List<UserResponse> listAll() {
-        return userRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .toList();
+        User currentUser = securityUtils.getCurrentUser();
+
+        if (currentUser == null) {
+            throw new HttpResponseException("No authenticated user found", HttpStatus.UNAUTHORIZED);
+        }
+
+        List<User> users = "ADMIN".equals(currentUser.getRole())
+                ? userRepository.findAll()
+                : userRepository.findByRoleAndActiveTrue("USER");
+
+        return users.stream().map(this::toResponse).toList();
     }
 
     public UserResponse getByUsername(String username) {
-        User user = userRepository.findByUsername(username)
+        User currentUser = securityUtils.getCurrentUser();
+
+        if (currentUser == null) {
+            throw new HttpResponseException("No authenticated user found", HttpStatus.UNAUTHORIZED);
+        }
+
+        User user = userRepository.findByUsernameAndActiveTrue(username)
                 .orElseThrow(() -> new HttpResponseException("User not found: " + username, HttpStatus.NOT_FOUND));
+
+        if ("USER".equals(currentUser.getRole()) && !"USER".equals(user.getRole())) {
+            throw new HttpResponseException("Users can only query other active USER accounts", HttpStatus.FORBIDDEN);
+        }
+
         return toResponse(user);
-    }
-
-    public UserResponse updateClientName(Long id, String newName) {
-        User user = findUser(id);
-        user.setFullName(newName);
-        return toResponse(userRepository.save(user));
-    }
-
-    public UserResponse updatePassword(Long id, String newPassword) {
-        User user = findUser(id);
-        user.setPassword(encoder.encode(newPassword));
-        return toResponse(userRepository.save(user));
     }
 
     public AuthResponse login(AuthRequest request) {
@@ -86,15 +122,15 @@ public class UserService {
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
 
-        User user = userRepository.findByUsername(request.username())
-                .orElseThrow(() -> new HttpResponseException("User not found", HttpStatus.NOT_FOUND));
+        User user = userRepository.findByUsernameAndActiveTrue(request.username())
+                .orElseThrow(() -> new HttpResponseException("User not found or inactive", HttpStatus.NOT_FOUND));
 
         String token = jwtService.generateToken(user.getUsername(), user.getRole());
         return new AuthResponse(token);
     }
 
     private User findUser(Long id) {
-        return userRepository.findById(id)
+        return userRepository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> new HttpResponseException("User not found with id: " + id, HttpStatus.NOT_FOUND));
     }
 
@@ -103,8 +139,8 @@ public class UserService {
                 user.getId(),
                 user.getUsername(),
                 user.getFullName(),
-                user.getProfession(),
-                user.getRole()
+                user.getRole(),
+                user.getActive()
         );
     }
 }

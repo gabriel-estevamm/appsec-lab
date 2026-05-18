@@ -7,8 +7,8 @@ public record UserRequest(
         String username,
         @NotBlank(message = "Full name is mandatory")
         String fullName,
-        @NotBlank(message = "Profession is mandatory")
-        String profession,
+        @NotBlank(message = "Role is mandatory")
+        String role,
         @NotBlank(message = "Password is mandatory")
         String password
 ) {}
