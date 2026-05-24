@@ -19,5 +19,5 @@ spring:
 
   jwt:
     # secret: ${JWT_SECRET}
-    secret: mysecret123
+    secret: mysuperlongsecretkeywith32chars!!
     expiration: ${JWT_EXPIRATION}
