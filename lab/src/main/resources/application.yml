@@ -18,6 +18,5 @@ spring:
     password: appsec123
 
   jwt:
-    # secret: ${JWT_SECRET}
-    secret: mysuperlongsecretkeywith32chars!!
+    secret: ${JWT_SECRET}
     expiration: ${JWT_EXPIRATION}
