@@ -28,8 +28,21 @@ This repository is tailored for:
 
 ## Repository Structure
 - **README - AppSec Overview:** A concise introduction with real-world examples.
-- **labs/**: Hands-on exercises to simulate vulnerabilities and defenses.
-- **articles/**: Focused write-ups on specific AppSec topics.
+- **lab/**: Hands-on exercises to simulate vulnerabilities and defenses.
+- **docs/**: Focused write-ups on specific AppSec topics.
+
+## Documentation & Labs
+This repository also contains detailed documentation and lab reports:
+
+- **Documentations**  
+  - [What is AppSec?](docs/AppSec.md)  
+  - [Owasp Top 10 2025](docs/owasp-top-ten-2025.md)  
+  
+- **Labs**  
+  - [Lab 01 - JWT Injection Turning into Privilage Escalation](lab01.md)
+
+Use these sections to dive deeper into both the theoretical and practical aspects of Application Security.  
+The **articles** explain vulnerabilities, secure design, and mitigation strategies, while the **labs** provide hands-on experiments simulating attacks and defenses.
 
 ## Final Note
 Security is not just about protecting code — it’s about protecting trust. Use this repository to grow your skills, but always remember: practicing security responsibly is the key to becoming a true professional in the field.
