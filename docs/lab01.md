@@ -7,6 +7,7 @@ This vulnerability relates to multiple OWASP Top 10 categories:
 - **[Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/)** → leaked secret key enabled token forgery.  
 - **[Insecure Design](https://owasp.org/Top10/2025/A06_2025-Insecure_Design/)** → lack of session inactivity handling and refresh token rotation.  
 - **[Injection](https://owasp.org/Top10/2025/A05_2025-Injection/)** → attacker manipulated JWT payloads to escalate privileges.  
+- **[Security Logging & Alerting Failures](https://owasp.org/Top10/2025/A09_2025-Security_Logging_and_Alerting_Failures/)** → lack of logging information
 
 
 ## Vulnerable Scenario
