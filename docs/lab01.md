@@ -11,6 +11,8 @@ This vulnerability relates to multiple OWASP Top 10 categories:
 
 
 ## Vulnerable Scenario
+ 🐞[appsec-lab/app-vulnerabilities](https://github.com/gabriel-estevamm/appsec-lab/tree/app-vulnerabilities/lab)
+ 
 In the vulnerable version of the API:
 
 - The secret key leaked.  
