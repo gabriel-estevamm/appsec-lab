@@ -39,7 +39,7 @@ This repository also contains detailed documentation and lab reports:
   - [Owasp Top 10 2025](docs/owasp-top-ten-2025.md)  
   
 - **Labs**  
-  - [Lab 01 - JWT Injection Turning into Privilage Escalation](lab01.md)
+  - [Lab 01 - JWT Injection Turning into Privilage Escalation](docs/lab01.md)
 
 Use these sections to dive deeper into both the theoretical and practical aspects of Application Security.  
 The **articles** explain vulnerabilities, secure design, and mitigation strategies, while the **labs** provide hands-on experiments simulating attacks and defenses.
