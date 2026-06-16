@@ -260,3 +260,5 @@ Administrator Access
 ## Conclusion
 
 This machine demonstrated how a seemingly minor exposure, such as an accessible backup share, can lead to complete system compromise. By combining SMB enumeration, credential harvesting, SQL Server abuse, and local enumeration, it was possible to escalate privileges from an initial foothold to full administrative access.
+
+![achievement.png](./asset/images/achievement.png)
