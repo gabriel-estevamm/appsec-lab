@@ -40,6 +40,7 @@ This repository also contains detailed documentation and lab reports:
   
 - **Labs**  
   - [Lab 01 - JWT Injection Turning into Privilage Escalation](docs/lab01.md)
+  - [Lab 02 - Windows Privilege Escalation via MSSQL](docs/lab02.md).
 
 Use these sections to dive deeper into both the theoretical and practical aspects of Application Security.  
 The **articles** explain vulnerabilities, secure design, and mitigation strategies, while the **labs** provide hands-on experiments simulating attacks and defenses.
